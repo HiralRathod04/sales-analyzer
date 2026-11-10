@@ -1,3 +1,4 @@
+import altair as alt
 import streamlit as st
 import pandas as pd
 from pathlib import Path
@@ -135,10 +136,17 @@ if "clean" in st.session_state:
         top_countries = view.groupby("Country")["Revenue"].sum().sort_values(ascending=False).head(10)
         st.bar_chart(top_countries)
 
-    st.subheader("Revenue by day of the week")
-    days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
-    by_day = view.groupby(view["Date"].dt.day_name())["Revenue"].sum().reindex(days).fillna(0)
-    st.bar_chart(by_day)
+    
+        st.subheader("Revenue by day of the week")
+        day_names = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+        short = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+        by_day = view.groupby(view["Date"].dt.day_name())["Revenue"].sum().reindex(day_names).fillna(0)
+        day_table = pd.DataFrame({"Day": short, "Revenue": by_day.values})
+        day_chart = alt.Chart(day_table).mark_bar().encode(
+            x=alt.X("Day:N", sort=short, axis=alt.Axis(labelAngle=0, title=None)),
+            y=alt.Y("Revenue:Q", title="Revenue"),
+        )
+        st.altair_chart(day_chart, use_container_width=True)
 
     # ----- Customer segments -----
     st.subheader("Customer segments (RFM)")
