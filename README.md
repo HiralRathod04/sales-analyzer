@@ -15,6 +15,7 @@ Upload a sales CSV, tell the app which column is which, and get clean data, busi
 - **Forecasts daily revenue** with Linear Regression and Random Forest, compared against a simple baseline.
 
 ![Charts and segments](screenshots/charts.png)
+![Weekdays and customer segments](screenshots/segments.png)
 
 ## Results on the two datasets I tested
 
